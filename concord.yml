@@ -1,0 +1,50 @@
+
+publicFlows: [ onPush ]
+
+configuration:
+  debug: false
+  requirements:
+    agent:
+      flavor: neoworkz-k8s
+  dependencies:
+    - mvn://com.walmartlabs.concord.plugins:git:1.46.0
+    - mvn://org.python:jython-standalone:2.7.1
+    - mvn://org.codehaus.groovy:groovy-all:pom:3.0.19
+
+
+triggers:
+  - github:
+      version: 2
+      entryPoint: "onPush"
+      useInitiator: true
+      activeProfiles: [ githubtrigger ]
+      conditions:
+        type: "push"
+        githubOrg: ".*"
+        githubRepo: ".*"
+        branch: ".*"
+        payload:
+          before: "^((?!00000000000000000000000000000000).)*$"
+          head_commit:
+            message: "(?s)^(?!.*(\\[skip-ci\\]|\\[skip ci\\])).*$"
+          repository:
+            topics:
+              - "gitops-kitt"
+
+flows:
+  default:
+    - log: '${initiator.username} started the flow.'
+
+  assertOrganization:
+    - if: ${projectInfo.orgName != 'strati'}
+      then:
+        - throw: "KITT workflow is not allowed outside of 'strati' organization
+
+  onPush:
+    - call: assertOrganization
+    - log: >-
+        ${event.sender} modified PR '${event.payload.pull_request.title}' on
+        ${event.payload.organization.login}/${event.payload.repository.name}
+    - set:
+        repoMetadata: '${event.payload.organization.login}/${event.payload.repository.name}'
+        eventFlow: 'main'
