@@ -2,6 +2,7 @@
 publicFlows: [ onPush ]
 
 configuration:
+  runtime: "concord-v2"
   debug: false
   requirements:
     agent:
