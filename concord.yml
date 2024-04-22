@@ -6,11 +6,18 @@ configuration:
   requirements:
     agent:
       flavor: neoworkz-k8s
+  meta:
+    repoMetadata: "n/a"
+    versionMetadata: "n/a"
+    managed-by: "n/a"
+    artifactName: "n/a"
+    currentStage: "n/a"
+    stageLevelClusterList: "n/a"
+    processDescription: "KITT Pipeline"
   dependencies:
     - mvn://com.walmartlabs.concord.plugins:git:1.46.0
     - mvn://org.python:jython-standalone:2.7.1
     - mvn://org.codehaus.groovy:groovy-all:pom:3.0.19
-
 
 triggers:
   - github:
