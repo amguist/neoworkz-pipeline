@@ -28,7 +28,7 @@ triggers:
       activeProfiles: [ githubtrigger ]
       conditions:
         type: "push"
-        githubOrg: ".*"
+        githubOrg: "Neoworkz"
         githubRepo: ".*"
         branch: ".*"
         payload:
